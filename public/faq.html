@@ -1,37 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FAQ — Unified LLM</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>InteGen — FAQ</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <script src="lang.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="/"><img src="assets/logo.png" alt="Logo" /></a>
-      <nav class="nav">
-        <a href="/" class="nav-link">Home</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="faq.html" class="nav-link active">FAQ</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-        <a href="subscribe.html" class="nav-link">Subscription</a>
-        <a href="ui.html" class="nav-link cta">Open Chat</a>
-        <a href="#" id="navLogin4" class="nav-link">Login</a>
-        <select id="languageSelect4" class="lang-select"></select>
-      </nav>
+  <header class="header">
+    <div class="header-left brand"><img src="assets/Logo.jpg" alt="InteGen logo"/></div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="faq.html" aria-current="page">FAQ</a>
+      <a href="contact.html">Contact</a>
+      <a href="subscribe.html">Subscription</a>
+    </nav>
+    <div class="actions">
+      <select id="language"><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option></select>
+      <a class="cta" href="ui.html">Open Chat</a>
     </div>
   </header>
 
-  <main class="page content">
-    <h2>Frequently Asked Questions</h2>
-    <div class="faq-list">
-      <details><summary>What models are available?</summary><p>We connect multiple providers — OpenAI (ChatGPT), and local adapters. You can add API keys to enable more providers.</p></details>
-      <details><summary>How does subscription work?</summary><p>Stripe Checkout handles payments. On successful payment your account is upgraded automatically.</p></details>
-      <details><summary>Can I cancel?</summary><p>Yes — cancel via the Stripe dashboard for your subscription.</p></details>
-    </div>
-  </main>
+  <div class="container">
+    <section class="hero">
+      <img class="hero-logo" src="assets/Logo.jpg" alt="InteGen brand"/>
+      <h1 id="title">All AI Models. One Place.</h1>
+      <p id="subtitle" class="subtitle">InteGen combines multiple AI systems into one powerful, combined experience.</p>
+    </section>
 
-  <script src="app.js"></script>
+    <section style="margin-top:20px; text-align:left; max-width:900px; margin-left:auto; margin-right:auto;">
+      <h2>Frequently Asked Questions</h2>
+      <div style="margin-top:14px;">
+        <details class="card" style="padding:14px; margin-bottom:10px;">
+          <summary style="font-weight:700; cursor:pointer;">How does InteGen combine models?</summary>
+          <div style="margin-top:8px;color:var(--muted)">We route queries to multiple adapters (GPT, Gemini, Claude), score answers and fuse them into one consolidated response.</div>
+        </details>
+
+        <details class="card" style="padding:14px; margin-bottom:10px;">
+          <summary style="font-weight:700; cursor:pointer;">Is my data private?</summary>
+          <div style="margin-top:8px;color:var(--muted)">Yes — sessions are encrypted in transit; we provide options for data retention or ephemeral sessions for privacy-sensitive use cases.</div>
+        </details>
+
+        <details class="card" style="padding:14px; margin-bottom:10px;">
+          <summary style="font-weight:700; cursor:pointer;">What payment methods do you accept?</summary>
+          <div style="margin-top:8px;color:var(--muted)">Stripe for card payments and subscription management. Enterprise billing available via invoice.</div>
+        </details>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="left">contact@integen.ai • +27 11 021 0680</div>
+    <div class="right">© 2025 InteGen — SlimTech Service</div>
+  </footer>
 </body>
 </html>
