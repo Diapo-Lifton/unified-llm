@@ -1,0 +1,46 @@
+# ---------------------------
+# 🧠 Unified LLM Deployment
+# Render Configuration File
+# ---------------------------
+
+services:
+  - type: web
+    name: unified-llm
+    env: node
+    plan: free
+    region: frankfurt  # you can change to oregon, singapore, etc.
+
+    buildCommand: |
+      npm install
+
+    startCommand: |
+      node server.js
+
+    autoDeploy: true
+
+    envVars:
+      # ⚙️ App Settings
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        sync: false
+
+      # 💳 Stripe Keys (set securely in Render dashboard)
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PRICE_BASIC
+        sync: false
+      - key: STRIPE_PRICE_PRO
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+
+      # 🤖 OpenAI API Key
+      - key: OPENAI_API_KEY
+        sync: false
+
+      # 🗃️ Database file
+      - key: DB_PATH
+        value: ./data/users.json

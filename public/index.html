@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Unified LLM Hub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/"><img src="assets/logo.png" alt="Logo" id="brandLogo" /></a>
+      <nav class="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="subscribe.html" class="nav-link">Subscription</a>
+        <a href="ui.html" class="nav-link cta">Open Chat</a>
+        <a href="#" id="navLogin" class="nav-link">Login</a>
+        <select id="languageSelect" class="lang-select" aria-label="Language">
+          <option value="en">English</option>
+          <option value="zh">中文</option>
+          <option value="hi">हिन्दी</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="ar">العربية</option>
+          <option value="bn">বাংলা</option>
+          <option value="ru">Русский</option>
+          <option value="pt">Português</option>
+          <option value="ur">اردو</option>
+        </select>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">All AI Models. One Place.</h1>
+      <p class="hero-sub">Experience GPT, Claude, Gemini & more — together in a single seamless chat.</p>
+      <div class="hero-cta">
+        <a href="ui.html" class="btn-primary">Get Started</a>
+        <a href="subscribe.html" class="btn-secondary">View Plans</a>
+      </div>
+    </div>
+
+    <div class="floating-chat-card">
+      <div class="chat-bubble">👋 Welcome! Ask anything to start chatting.</div>
+      <div class="chat-controls">
+        <input id="miniPrompt" placeholder="Type your message..." />
+        <button id="miniSend" class="btn-pill">Send</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div>© <span id="year"></span> Unified LLM Hub • Built with ♥</div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

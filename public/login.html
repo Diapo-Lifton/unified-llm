@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — Unified LLM</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/"><img src="assets/logo.png" alt="Logo" /></a>
+      <nav class="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="subscribe.html" class="nav-link">Subscription</a>
+        <a href="ui.html" class="nav-link cta">Open Chat</a>
+        <a href="#" id="navLogin6" class="nav-link active">Login</a>
+        <select id="languageSelect6" class="lang-select"></select>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page content">
+    <h2>Login or Register</h2>
+    <div class="auth-card">
+      <input id="authEmail" placeholder="Email" type="email" />
+      <input id="authPassword" placeholder="Password" type="password" />
+      <div class="auth-actions">
+        <button id="doLogin" class="btn-secondary">Login</button>
+        <button id="doRegister" class="btn-primary">Register</button>
+      </div>
+      <div id="authMsg" class="muted small"></div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

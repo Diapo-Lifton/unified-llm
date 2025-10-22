@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Unified LLM</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/"><img src="assets/logo.png" alt="Logo" /></a>
+      <nav class="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-link active">Contact</a>
+        <a href="subscribe.html" class="nav-link">Subscription</a>
+        <a href="ui.html" class="nav-link cta">Open Chat</a>
+        <a href="#" id="navLogin3" class="nav-link">Login</a>
+        <select id="languageSelect3" class="lang-select"></select>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page content">
+    <h2>Contact Us</h2>
+    <p>Questions or feedback? Drop us a message — we reply within 24 hours.</p>
+    <form id="contactForm" class="contact-form">
+      <input name="name" placeholder="Your name" required />
+      <input name="email" placeholder="Email" type="email" required />
+      <textarea name="message" placeholder="How can we help?" rows="6" required></textarea>
+      <button type="submit" class="btn-primary">Send Message</button>
+      <div id="contactMsg" class="muted small"></div>
+    </form>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

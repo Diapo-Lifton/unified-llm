@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FAQ — Unified LLM</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/"><img src="assets/logo.png" alt="Logo" /></a>
+      <nav class="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="faq.html" class="nav-link active">FAQ</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="subscribe.html" class="nav-link">Subscription</a>
+        <a href="ui.html" class="nav-link cta">Open Chat</a>
+        <a href="#" id="navLogin4" class="nav-link">Login</a>
+        <select id="languageSelect4" class="lang-select"></select>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page content">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <details><summary>What models are available?</summary><p>We connect multiple providers — OpenAI (ChatGPT), and local adapters. You can add API keys to enable more providers.</p></details>
+      <details><summary>How does subscription work?</summary><p>Stripe Checkout handles payments. On successful payment your account is upgraded automatically.</p></details>
+      <details><summary>Can I cancel?</summary><p>Yes — cancel via the Stripe dashboard for your subscription.</p></details>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
