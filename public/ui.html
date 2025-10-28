@@ -1,28 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>InteGen — Chat</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script src="lang.js" defer></script>
-  <style>
-    /* small UI overrides */
-    .chat-shell{ max-width:980px; margin:28px auto; padding:18px; display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap;}
-    .left-panel{ flex:1 1 320px; min-width:280px }
-    .right-panel{ flex:1 1 520px; min-width:320px; }
-    .chat-window{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.05)); border-radius:12px; padding:14px; height:520px; overflow:auto; border:1px solid rgba(255,255,255,0.03) }
-    .msg{ margin-bottom:12px; padding:10px; border-radius:12px; max-width:85%}
-    .msg.user{ background: linear-gradient(180deg, rgba(0,224,199,0.12), rgba(0,224,199,0.06)); color:#002825; margin-left:auto }
-    .msg.bot{ background: rgba(255,255,255,0.03); color:var(--muted) }
-    .input-row{ display:flex; gap:10px; margin-top:12px }
-    input[type="text"]{ flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit }
-    button.send{ padding:10px 16px; border-radius:10px; border:none; background:var(--accent); color:#052724; font-weight:700; box-shadow:0 8px 24px rgba(0,224,199,0.12) }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>InteGen — Unified LLM Hub</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="header-left brand"><img src="assets/Logo.jpg" alt="InteGen logo"/></div>
+  <div class="topbar">
+    <img class="brand" src="assets/logo.jpg" alt="InteGen" />
     <nav class="nav">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
@@ -30,101 +16,39 @@
       <a href="contact.html">Contact</a>
       <a href="subscribe.html">Subscription</a>
     </nav>
-    <div class="actions">
-      <select id="language"><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option></select>
-      <a class="cta" href="ui.html">Open Chat</a>
-    </div>
-  </header>
-
-  <div class="container">
-    <section class="hero">
-      <img class="hero-logo" src="assets/Logo.jpg" alt="InteGen brand"/>
-      <h1 id="title">Unified Chat</h1>
-      <p id="subtitle" class="subtitle">Query multiple models, receive a single consolidated response.</p>
-    </section>
-
-    <div class="chat-shell">
-      <div class="left-panel">
-        <div class="card">
-          <h3>Model / Source</h3>
-          <p style="color:var(--muted)">Choose model(s) to include in the query. Default: Best Ensemble.</p>
-          <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-            <label style="display:inline-flex; align-items:center; gap:8px;"><input type="checkbox" checked/> GPT-like</label>
-            <label style="display:inline-flex; align-items:center; gap:8px;"><input type="checkbox" checked/> Gemini</label>
-            <label style="display:inline-flex; align-items:center; gap:8px;"><input type="checkbox"/> Claude</label>
-            <label style="display:inline-flex; align-items:center; gap:8px;"><input type="checkbox"/> Web Sources</label>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:14px;">
-          <h3>Session</h3>
-          <p style="color:var(--muted)">Realtime mode vs. contextual mode. Session tokens are managed server-side.</p>
-        </div>
-      </div>
-
-      <div class="right-panel">
-        <div class="chat-window" id="chatWindow" role="log" aria-live="polite">
-          <div class="msg bot"><strong>InteGen</strong><div style="margin-top:6px;color:var(--muted)">Hi — ask me anything. I'll consult multiple AI models and return the best answer.</div></div>
-        </div>
-
-        <div class="card" style="margin-top:12px;">
-          <div class="input-row">
-            <input id="userInput" type="text" placeholder="Type your message..." />
-            <button class="send" id="sendBtn">Send</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <footer class="footer">
-    <div class="left">contact@integen.ai • +27 11 021 0680</div>
-    <div class="right">© 2025 InteGen — SlimTech Service</div>
+  <main class="page">
+    <section class="left-panel">
+      <div class="panel glass">
+        <h3>Models</h3>
+        <label><input type="checkbox" id="model_gpt" checked> GPT-like</label><br/>
+        <label><input type="checkbox" id="model_gemini"> Gemini</label><br/>
+        <label><input type="checkbox" id="model_claude"> Claude</label><br/>
+        <label><input type="checkbox" id="model_web"> Web Sources</label>
+      </div>
+
+      <div class="panel glass">
+        <h3>Session</h3>
+        <p>Realtime mode vs contextual mode. Session tokens are managed server-side.</p>
+      </div>
+    </section>
+
+    <section class="chat-area glass">
+      <div id="chatBox" class="chat-window"></div>
+
+      <div class="chat-controls">
+        <input id="userInput" placeholder="Type your message..." autocomplete="off" />
+        <button id="sendBtn">Send</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>contact@integen.ai • +27 11 021 0680</div>
+    <div>© 2025 InteGen — SlimTech Service</div>
   </footer>
 
-  <script>
-    // keep language wiring
-    document.addEventListener('DOMContentLoaded', ()=> {
-      const sel = document.getElementById('language');
-      if(sel){ sel.addEventListener('change', ()=> applyLanguage(sel.value)); }
-      applyLanguage('en');
-    });
-
-    // basic chat client (stub) - replace endpoint with your backend route
-    const chatWindow = document.getElementById('chatWindow');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
-
-    function appendMsg(text, who='bot'){
-      const el = document.createElement('div');
-      el.className = 'msg ' + (who==='user' ? 'user' : 'bot');
-      el.innerHTML = '<div>' + text + '</div>';
-      chatWindow.appendChild(el);
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
-
-    sendBtn.addEventListener('click', async ()=>{
-      const txt = userInput.value.trim();
-      if(!txt) return;
-      appendMsg(txt,'user');
-      userInput.value='';
-      appendMsg('Thinking...','bot');
-
-      // call backend here - placeholder
-      try {
-        const res = await fetch('/api/chat', {
-          method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:txt})
-        });
-        const data = await res.json();
-        chatWindow.lastElementChild.remove(); // remove "Thinking..."
-        appendMsg(data.reply || data.result || "No reply. Server did not respond.", 'bot');
-      } catch(e){
-        chatWindow.lastElementChild.remove();
-        appendMsg("Error contacting server. Make sure backend is running.","bot");
-      }
-    });
-
-    userInput.addEventListener('keypress', (e)=>{ if(e.key==='Enter') sendBtn.click(); });
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>

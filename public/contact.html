@@ -1,66 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>InteGen — Contact</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script src="lang.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — InteGen</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="header">
-    <div class="header-left brand"><img src="assets/Logo.jpg" alt="InteGen logo"/></div>
-    <nav class="nav">
+  <!-- Header -->
+  <header class="navbar">
+    <div class="nav-logo">
+      <img src="assets/logo.png" alt="InteGen Logo" class="logo" />
+      <span class="brand-name">InteGen</span>
+    </div>
+    <nav class="nav-links">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
       <a href="faq.html">FAQ</a>
-      <a href="contact.html" aria-current="page">Contact</a>
+      <a href="contact.html" class="active">Contact</a>
       <a href="subscribe.html">Subscription</a>
     </nav>
-    <div class="actions">
-      <select id="language"><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option></select>
-      <a class="cta" href="ui.html">Open Chat</a>
-    </div>
   </header>
 
-  <div class="container">
-    <section class="hero">
-      <img class="hero-logo" src="assets/Logo.jpg" alt="InteGen brand"/>
-      <h1 id="title">Contact Us</h1>
-      <p id="subtitle" class="subtitle">We’re here to help — SlimTech Service supports InteGen for enterprise & consumer plans.</p>
-    </section>
+  <section class="hero">
+    <h1>Contact InteGen</h1>
+    <p>We’d love to hear from you — let’s connect.</p>
+  </section>
 
-    <section style="margin-top:22px; max-width:900px; margin-left:auto; margin-right:auto;">
-      <div class="card contact-card">
-        <div>
-          <h3>Get in touch</h3>
-          <p style="color:var(--muted)">For product questions, demos, or enterprise onboarding contact us below.</p>
-          <p style="margin-top:12px"><strong>Phone:</strong> <span class="contact-phone">+27 11 021 0680</span></p>
-          <p><strong>Cell:</strong> <span class="contact-phone">+27 79 066 8838</span></p>
-          <p><strong>Email:</strong> <span class="contact-email">contact@integen.ai</span></p>
-        </div>
+  <section class="contact-form">
+    <form>
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="Your Message" rows="5"></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
 
-        <form style="margin-left:auto; max-width:420px; width:100%;" onsubmit="event.preventDefault(); alert('Thanks — we will contact you soon!');">
-          <label style="display:block;text-align:left;color:var(--muted);margin-bottom:6px">Your name</label>
-          <input required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit"/>
-
-          <label style="display:block;text-align:left;color:var(--muted);margin:12px 0 6px">Email</label>
-          <input required type="email" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit"/>
-
-          <label style="display:block;text-align:left;color:var(--muted);margin:12px 0 6px">Message</label>
-          <textarea required style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;min-height:100px"></textarea>
-
-          <div style="margin-top:12px;text-align:right">
-            <button class="cta" type="submit">Send Message</button>
-          </div>
-        </form>
-      </div>
-    </section>
-  </div>
-
-  <footer class="footer">
-    <div class="left">contact@integen.ai • +27 11 021 0680</div>
-    <div class="right">© 2025 InteGen — SlimTech Service</div>
+  <footer>
+    <p>contact@integen.ai | +27 11 021 0680 | +27 79 066 8838</p>
+    <p>© 2025 InteGen — SlimTech Service. All rights reserved.</p>
   </footer>
 </body>
 </html>

@@ -1,28 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Unified LLM Hub</title>
+  <meta charset="utf-8" />
+  <title>InteGen — Unified LLM Hub</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
-  <script src="lang.js"></script>
 </head>
 <body>
-  <header>
-    <img src="assets/Logo.jpg" alt="Unified LLM Hub" />
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="subscribe.html">Subscription</a></li>
-      </ul>
-    </nav>
-    <div>
-      <select id="language" onchange="changeLanguage(this.value)">
-        <option value="en" selected>English</option>
+  <nav>
+    <div class="logo-wrap">
+      <img src="assets/logo.png" alt="InteGen Logo">
+      <div>
+        <div class="brand">InteGen</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.55)">Unified LLM Hub — SlimTech Service</div>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" data-i18n="nav_home">Home</a>
+      <a href="about.html" data-i18n="nav_about">About</a>
+      <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+      <a href="contact.html" data-i18n="nav_contact">Contact</a>
+      <a href="subscribe.html" data-i18n="nav_subscription">Subscription</a>
+    </div>
+
+    <div class="header-actions">
+      <select id="langSelect" class="select" aria-label="Language">
+        <option value="en">English</option>
         <option value="fr">Français</option>
         <option value="es">Español</option>
+        <option value="zh">中文</option>
+        <option value="ar">العربية</option>
+        <option value="pt">Português</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ru">Русский</option>
+        <option value="ja">日本語</option>
       </select>
-      <a href="ui.html" class="cta">Open C
+      <button id="openChatBtn" class="action-btn" data-i18n="open_chat">Open Chat</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="hero-left">
+        <h1 data-i18n="hero_title">All AI models. One platform.</h1>
+        <p data-i18n="hero_desc">InteGen combines multiple top LLMs into a single platform for accurate, real-time responses.</p>
+        <div class="hero-cta">
+          <button class="btn-primary" id="startChat" data-i18n="start_chat">Start Chatting</button>
+          <button class="btn-ghost" onclick="window.location='about.html'" data-i18n="learn_more">Learn More</button>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="logo-3d" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="section-pricing">
+      <div class="pricing-header">
+        <h2 data-i18n="pricing_title">Choose a plan</h2>
+        <p data-i18n="pricing_sub">Flexible monthly subscriptions for individuals and teams — billed in USD. Cancel anytime.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- PRO -->
+        <div class="price-card">
+          <div class="price-title" data-i18n="pro_title">Pro</div>
+          <div class="price-amount" data-i18n="pro_price">$25 / month</div>
+          <ul class="price-features" data-i18n="pro_features">
+            <!-- filled by JS -->
+          </ul>
+          <button class="contact-sales" data-plan="pro" data-i18n="subscribe_cta">Subscribe</button>
+        </div>
+
+        <!-- ULTIMATE -->
+        <div class="price-card">
+          <div class="price-title" data-i18n="ultimate_title">Ultimate</div>
+          <div class="price-amount" data-i18n="ultimate_price">$45 / month</div>
+          <ul class="price-features" data-i18n="ultimate_features"></ul>
+          <button class="contact-sales" data-plan="ultimate" data-i18n="subscribe_cta">Subscribe</button>
+        </div>
+
+        <!-- ENTERPRISE -->
+        <div class="price-card">
+          <div class="price-title" data-i18n="enterprise_title">Enterprise</div>
+          <div class="price-amount" data-i18n="enterprise_price">Contact Sales</div>
+          <ul class="price-features" data-i18n="enterprise_features"></ul>
+          <button class="contact-sales" onclick="window.location='contact.html'" data-i18n="contact_sales">Contact Sales</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div data-i18n="footer_contact">contact@integen.ai • +27 11 021 0680 • +27 79 066 8838</div>
+    <div style="padding-top:10px; color:rgba(255,255,255,0.45)">© 2025 InteGen — SlimTech Service. All rights reserved.</div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

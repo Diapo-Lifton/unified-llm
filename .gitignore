@@ -2,3 +2,6 @@
 .env
 .env.local
 *.log
+data/db.json
+.DS_Store
+npm-debug.log*

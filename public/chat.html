@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat — InteGen</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="navbar">
+    <div class="nav-logo">
+      <img src="assets/logo.png" alt="InteGen Logo" class="logo" />
+      <span class="brand-name">InteGen</span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+      <a href="subscribe.html">Subscription</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>InteGen AI Chat</h1>
+    <p>Interact with unified intelligence from multiple AI models.</p>
+  </section>
+
+  <section class="chat-box">
+    <div class="chat-window" id="chat-window"></div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type your message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>contact@integen.ai | +27 11 021 0680 | +27 79 066 8838</p>
+    <p>© 2025 InteGen — SlimTech Service. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const sendBtn = document.getElementById("sendBtn");
+    const chatWindow = document.getElementById("chat-window");
+    const userInput = document.getElementById("userInput");
+
+    sendBtn.addEventListener("click", () => {
+      const msg = userInput.value.trim();
+      if (!msg) return;
+      chatWindow.innerHTML += `<div class='user-msg'>${msg}</div>`;
+      chatWindow.innerHTML += `<div class='ai-msg'>Thinking...</div>`;
+      userInput.value = "";
+      setTimeout(() => {
+        document.querySelector(".ai-msg:last-child").innerText = "This is where AI will respond (integration ready).";
+      }, 800);
+    });
+  </script>
+</body>
+</html>

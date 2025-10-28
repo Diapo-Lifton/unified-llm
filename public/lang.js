@@ -1,104 +1,495 @@
-// lang.js - multilingual strings and dynamic content updates
-const translations = {
-  en: {
-    title: "All AI Models. One Place.",
-    subtitle: "InteGen AI — combining leading AI models into a single platform that delivers realistic, trusted, combined answers from multiple sources.",
-    start: "Get Started",
-    plans: "View Plans",
-    aboutHeading: "About InteGen",
-    aboutText: "InteGen AI combines top-performing models (OpenAI GPT, Google Gemini, Anthropic Claude and more) into one platform to give you super-realistic, consolidated responses sourced from trusted global sources. Built by SlimTech Service.",
-    contactPhone1: "+27 11 021 0680",
-    contactPhone2: "+27 79 066 8838",
-    contactEmail: "contact@integen.ai",
-    features: [
-      {title:"Unified Chat", text:"Route queries to multiple models and aggregate the best response."},
-      {title:"Real-time Sources", text:"Fetch and summarise trusted content from news, journals and datasets."},
-      {title:"GPT-level Quality", text:"Offer quality comparable to state-of-the-art multi-turn models."},
-      {title:"Advanced Gemini Support", text:"Access Google Gemini capabilities when available."},
-      {title:"Multilingual", text:"Full language switching across the entire UI."},
-      {title:"Secure & Compliant", text:"Encrypted sessions, safe billing and GDPR-aware data handling."}
-    ]
-  },
-  fr: {
-    title: "Tous les modèles d'IA. Un seul endroit.",
-    subtitle: "InteGen AI — combine les meilleurs modèles d'IA dans une plate-forme unique offrant des réponses consolidées et réalistes.",
-    start: "Commencer",
-    plans: "Voir les formules",
-    aboutHeading: "À propos d'InteGen",
-    aboutText: "InteGen AI combine des modèles performants (OpenAI GPT, Google Gemini, Anthropic Claude et plus) pour fournir des réponses consolidées et fiables, issues de sources mondiales. Construit par SlimTech Service.",
-    contactPhone1: "+27 11 021 0680",
-    contactPhone2: "+27 79 066 8838",
-    contactEmail: "contact@integen.ai",
-    features: [
-      {title:"Chat unifié", text:"Dirigez les requêtes vers plusieurs modèles et agrégez la meilleure réponse."},
-      {title:"Sources en temps réel", text:"Récupérez et résumez du contenu fiable (presse, revues, datasets)."},
-      {title:"Qualité GPT", text:"Qualité comparable aux meilleurs modèles multi-tours."},
-      {title:"Support Gemini", text:"Accès aux capacités de Google Gemini quand disponible."},
-      {title:"Multilingue", text:"Changement de langue sur toute l'interface."},
-      {title:"Sécurisé", text:"Sessions chiffrées et conformité RGPD."}
-    ]
-  },
-  es: {
-    title: "Todos los modelos de IA. Un solo lugar.",
-    subtitle: "InteGen AI — combinando modelos líderes para ofrecer respuestas realistas y consolidadas de fuentes fiables.",
-    start: "Comenzar",
-    plans: "Ver Planes",
-    aboutHeading: "Acerca de InteGen",
-    aboutText: "InteGen AI combina modelos de alto rendimiento (OpenAI GPT, Google Gemini, Anthropic Claude y más) para dar respuestas consolidadas y confiables, construidas por SlimTech Service.",
-    contactPhone1: "+27 11 021 0680",
-    contactPhone2: "+27 79 066 8838",
-    contactEmail: "contact@integen.ai",
-    features: [
-      {title:"Chat Unificado", text:"Enruta consultas a múltiples modelos y agrega la mejor respuesta."},
-      {title:"Fuentes en tiempo real", text:"Recopila y resume contenido de prensa, revistas y datasets."},
-      {title:"Calidad GPT", text:"Calidad comparable a los modelos multi-turno de vanguardia."},
-      {title:"Soporte Gemini", text:"Acceso a las capacidades de Google Gemini cuando estén disponibles."},
-      {title:"Multilingüe", text:"Soporte de idioma en toda la interfaz."},
-      {title:"Seguro", text:"Sesiones cifradas y cumplimiento regulatorio."}
-    ]
-  }
-};
+// public/lang.js
+// Full-site translation for homepage. It applies to any element with data-i18n or data-i18n-placeholder
+(function(){
+  const DICT = {
+    en: {
+      brand_sub: "Unified LLM Hub — SlimTech Service",
+      home: "Home", about: "About", faq: "FAQ", contact: "Contact", subscription: "Subscription",
+      open_chat: "Open Chat",
+      about_intro_title: "About InteGen",
+      about_intro_text: "InteGen combines multiple top LLMs into a single platform for accurate, real-time responses — GPT, Gemini, Claude and web-sourced facts, fused for reliability.",
+      quick_links_title: "Quick Links",
+      quick_links_text: "Chat, Subscriptions and Docs are available from the top menu. Built by SlimTech Service.",
+      hero_title: "All AI models. One platform.",
+      hero_sub: "Experience GPT, Gemini, Claude & more — together in a single seamless chat. Super realistic responses powered by multiple sources.",
+      start_chat: "Start chatting",
+      view_plans: "View plans",
+      features_title: "Features",
+      feature_multi: "Multi-model routing (GPT / Gemini / Claude)",
+      feature_sources: "Web sources & citations",
+      feature_secure: "Secure Stripe subscriptions",
+      feature_sessions: "Realtime & contextual sessions",
+      feature_scale: "Scale for teams and enterprise",
+      pricing_title: "Plans & Pricing",
+      plan_pro: "Pro",
+      price_pro: "$25",
+      pro_f1: "Access to all core models",
+      pro_f2: "Standard response priority",
+      pro_f3: "Email support",
+      choose_pro: "Choose Pro",
+      plan_ultimate: "Ultimate",
+      price_ultimate: "$45",
+      ultimate_f1: "Priority model compute",
+      ultimate_f2: "Higher context windows",
+      ultimate_f3: "Priority support + coaching",
+      choose_ultimate: "Choose Ultimate",
+      popular: "Popular",
+      plan_enterprise: "Enterprise",
+      price_contact: "Contact Sales",
+      ent_f1: "Custom SLAs & on-prem options",
+      ent_f2: "Dedicated model routing",
+      ent_f3: "Priority onboarding & support",
+      contact_sales: "Contact Sales",
+      trust_title: "Trusted & secure",
+      trust_text: "Built with best practices for reliability and privacy — used by researchers, teams and builders worldwide.",
+      contact_info: "contact@integen.ai • +27 11 021 0680",
+      brand_name: "InteGen",
+      per_month: "/mo",
+      ent_modal_title: "Contact Enterprise Sales",
+      ent_modal_text: "Fill the form and our sales team will contact you within one business day.",
+      ent_label_name: "Company / Name",
+      ent_ph_name: "Your company or name",
+      ent_label_email: "Email",
+      ent_ph_email: "you@company.com",
+      ent_label_notes: "Notes",
+      ent_ph_notes: "How will you use InteGen? (optional)",
+      ent_submit: "Send Request",
+      cancel: "Cancel",
+      view_plans_short: "Plans"
+    },
 
-function applyLanguage(lang='en'){
-  const t = translations[lang] || translations.en;
-  // hero
-  document.getElementById('title').textContent = t.title;
-  document.getElementById('subtitle').textContent = t.subtitle;
-  document.getElementById('start').textContent = t.start;
-  document.getElementById('plans').textContent = t.plans;
+    zh: {
+      brand_sub: "统一 LLM 平台 — SlimTech Service",
+      home: "首页", about: "关于", faq: "常见问题", contact: "联系", subscription: "订阅",
+      open_chat: "打开聊天",
+      about_intro_title: "关于 InteGen",
+      about_intro_text: "InteGen 将多种顶级 LLM 集成到一个平台中，实现准确、实时的响应 — GPT、Gemini、Claude 及来自网络的事实来源融合以确保可靠性。",
+      quick_links_title: "快速链接",
+      quick_links_text: "聊天、订阅和文档可从顶部菜单访问。由 SlimTech Service 构建。",
+      hero_title: "所有 AI 模型。一个平台。",
+      hero_sub: "体验 GPT、Gemini、Claude 等——在同一无缝聊天中协同工作。来自多源的超现实响应。",
+      start_chat: "开始聊天",
+      view_plans: "查看套餐",
+      features_title: "功能",
+      feature_multi: "多模型路由（GPT / Gemini / Claude）",
+      feature_sources: "网络来源与引用",
+      feature_secure: "安全的 Stripe 订阅",
+      feature_sessions: "实时与上下文会话",
+      feature_scale: "支持团队与企业扩展",
+      pricing_title: "套餐与定价",
+      plan_pro: "专业版",
+      price_pro: "$25",
+      pro_f1: "访问所有核心模型",
+      pro_f2: "标准响应优先级",
+      pro_f3: "邮件支持",
+      choose_pro: "选择 专业版",
+      plan_ultimate: "终极版",
+      price_ultimate: "$45",
+      ultimate_f1: "优先模型计算",
+      ultimate_f2: "更大上下文窗口",
+      ultimate_f3: "优先支持与辅导",
+      choose_ultimate: "选择 终极版",
+      popular: "热卖",
+      plan_enterprise: "企业版",
+      price_contact: "联系销售",
+      ent_f1: "定制 SLA 与本地部署选项",
+      ent_f2: "专用模型路由",
+      ent_f3: "优先入门与支持",
+      contact_sales: "联系销售",
+      trust_title: "值得信赖与安全",
+      trust_text: "采用可靠性与隐私的最佳实践构建 — 被研究者、团队和构建者广泛使用。",
+      contact_info: "contact@integen.ai • +27 11 021 0680",
+      per_month: "/月",
+      ent_modal_title: "联系企业销售",
+      ent_modal_text: "填写表单，我们的销售团队将在一个工作日内联系您。",
+      ent_label_name: "公司 / 姓名",
+      ent_ph_name: "您的公司或姓名",
+      ent_label_email: "电子邮件",
+      ent_ph_email: "you@company.com",
+      ent_label_notes: "备注",
+      ent_ph_notes: "您将如何使用 InteGen？（可选）",
+      ent_submit: "发送请求",
+      cancel: "取消",
+      view_plans_short: "套餐"
+    },
 
-  // about content
-  const aboutHead = document.getElementById('aboutHeading');
-  if(aboutHead) aboutHead.textContent = t.aboutHeading;
-  const aboutText = document.getElementById('aboutText');
-  if(aboutText) aboutText.textContent = t.aboutText;
+    es: {
+      brand_sub: "Plataforma LLM unificada — SlimTech Service",
+      home: "Inicio", about: "Acerca", faq: "FAQ", contact: "Contacto", subscription: "Suscripción",
+      open_chat: "Abrir Chat",
+      about_intro_title: "Sobre InteGen",
+      about_intro_text: "InteGen combina múltiples LLMs en una sola plataforma para respuestas precisas y en tiempo real — GPT, Gemini, Claude y datos web, fusionados para fiabilidad.",
+      quick_links_title: "Enlaces rápidos",
+      quick_links_text: "Chat, suscripciones y documentación disponibles en el menú superior. Construido por SlimTech Service.",
+      hero_title: "Todos los modelos AI. Una plataforma.",
+      hero_sub: "Experimenta GPT, Gemini, Claude y más — juntos en un chat único. Respuestas superrealistas impulsadas por múltiples fuentes.",
+      start_chat: "Iniciar chat",
+      view_plans: "Ver planes",
+      features_title: "Funciones",
+      feature_multi: "Enrutamiento multi-modelo (GPT / Gemini / Claude)",
+      feature_sources: "Fuentes web y citas",
+      feature_secure: "Suscripciones seguras con Stripe",
+      feature_sessions: "Sesiones en tiempo real y contextuales",
+      feature_scale: "Escala para equipos y empresas",
+      pricing_title: "Planes y Precios",
+      plan_pro: "Pro",
+      price_pro: "$25",
+      pro_f1: "Acceso a todos los modelos principales",
+      pro_f2: "Prioridad de respuesta estándar",
+      pro_f3: "Soporte por correo",
+      choose_pro: "Elegir Pro",
+      plan_ultimate: "Ultimate",
+      price_ultimate: "$45",
+      ultimate_f1: "Computación de modelo prioritaria",
+      ultimate_f2: "Mayores ventanas de contexto",
+      ultimate_f3: "Soporte prioritario + coaching",
+      choose_ultimate: "Elegir Ultimate",
+      popular: "Popular",
+      plan_enterprise: "Enterprise",
+      price_contact: "Contactar Ventas",
+      ent_f1: "SLA personalizados y opciones on-prem",
+      ent_f2: "Enrutamiento de modelo dedicado",
+      ent_f3: "Onboarding y soporte prioritario",
+      contact_sales: "Contactar Ventas",
+      trust_title: "Confiable y seguro",
+      trust_text: "Construido con prácticas óptimas para fiabilidad y privacidad — usado por investigadores y equipos en todo el mundo.",
+      contact_info: "contact@integen.ai • +27 11 021 0680",
+      per_month: "/mes",
+      ent_modal_title: "Contactar ventas Enterprise",
+      ent_modal_text: "Complete el formulario y nuestro equipo de ventas se pondrá en contacto en un día hábil.",
+      ent_label_name: "Empresa / Nombre",
+      ent_ph_name: "Su empresa o nombre",
+      ent_label_email: "Correo electrónico",
+      ent_ph_email: "you@company.com",
+      ent_label_notes: "Notas",
+      ent_ph_notes: "¿Cómo usará InteGen? (opcional)",
+      ent_submit: "Enviar solicitud",
+      cancel: "Cancelar",
+      view_plans_short: "Planes"
+    },
 
-  // contact
-  const p1 = document.querySelectorAll('.contact-phone')[0];
-  const p2 = document.querySelectorAll('.contact-phone')[1];
-  const em = document.querySelectorAll('.contact-email')[0];
-  if(p1) p1.textContent = t.contactPhone1;
-  if(p2) p2.textContent = t.contactPhone2;
-  if(em) em.textContent = t.contactEmail;
+    fr: {
+      brand_sub: "Plateforme LLM unifiée — SlimTech Service",
+      home: "Accueil", about: "À propos", faq: "FAQ", contact: "Contact", subscription: "Abonnement",
+      open_chat: "Ouvrir le chat",
+      about_intro_title: "À propos d'InteGen",
+      about_intro_text: "InteGen combine plusieurs LLMs de pointe en une seule plateforme pour des réponses précises et en temps réel — GPT, Gemini, Claude et sources web, fusionnés pour la fiabilité.",
+      quick_links_title: "Liens rapides",
+      quick_links_text: "Chat, abonnements et docs accessibles via le menu supérieur. Construit par SlimTech Service.",
+      hero_title: "Tous les modèles IA. Une plateforme.",
+      hero_sub: "Expérimentez GPT, Gemini, Claude et plus — ensemble dans un seul chat fluide. Réponses ultra réalistes alimentées par plusieurs sources.",
+      start_chat: "Commencer le chat",
+      view_plans: "Voir les plans",
+      features_title: "Fonctionnalités",
+      feature_multi: "Routage multi-modèles (GPT / Gemini / Claude)",
+      feature_sources: "Sources web & citations",
+      feature_secure: "Abonnements Stripe sécurisés",
+      feature_sessions: "Sessions temps réel & contextuelles",
+      feature_scale: "Échelle pour équipes et entreprises",
+      pricing_title: "Plans & Tarifs",
+      plan_pro: "Pro",
+      price_pro: "$25",
+      pro_f1: "Accès à tous les modèles principaux",
+      pro_f2: "Priorité de réponse standard",
+      pro_f3: "Support par e-mail",
+      choose_pro: "Choisir Pro",
+      plan_ultimate: "Ultimate",
+      price_ultimate: "$45",
+      ultimate_f1: "Calcul prioritaire des modèles",
+      ultimate_f2: "Fenêtres de contexte plus larges",
+      ultimate_f3: "Support prioritaire + coaching",
+      choose_ultimate: "Choisir Ultimate",
+      popular: "Populaire",
+      plan_enterprise: "Enterprise",
+      price_contact: "Contacter les ventes",
+      ent_f1: "SLA personnalisées & options on-prem",
+      ent_f2: "Routage de modèle dédié",
+      ent_f3: "Onboarding & support prioritaire",
+      contact_sales: "Contacter les ventes",
+      trust_title: "Fiable & sécurisé",
+      trust_text: "Conçu selon les meilleures pratiques de fiabilité et confidentialité — utilisé par chercheurs et équipes dans le monde.",
+      contact_info: "contact@integen.ai • +27 11 021 0680",
+      per_month: "/mois",
+      ent_modal_title: "Contacter les ventes Enterprise",
+      ent_modal_text: "Remplissez le formulaire, notre équipe commerciale vous contactera sous un jour ouvrable.",
+      ent_label_name: "Entreprise / Nom",
+      ent_ph_name: "Votre entreprise ou nom",
+      ent_label_email: "Email",
+      ent_ph_email: "you@company.com",
+      ent_label_notes: "Notes",
+      ent_ph_notes: "Comment utiliserez-vous InteGen ? (optionnel)",
+      ent_submit: "Envoyer la demande",
+      cancel: "Annuler",
+      view_plans_short: "Plans"
+    },
 
-  // features
-  const featureCards = document.querySelectorAll('.feature-card');
-  if(featureCards.length && t.features){
-    featureCards.forEach((card,i)=>{
-      const f = t.features[i] || {title:'', text:''};
-      card.querySelector('h3').textContent = f.title;
-      card.querySelector('p').textContent = f.text;
+    hi: {
+      brand_sub: "एकीकृत LLM हब — SlimTech Service",
+      home: "होम", about: "बारे में", faq: "प्रश्न", contact: "संपर्क", subscription: "सदस्यता",
+      open_chat: "चैट खोलें",
+      about_intro_title: "InteGen के बारे में",
+      about_intro_text: "InteGen कई शीर्ष LLMs को एक प्लेटफ़ॉर्म में जोड़ता है ताकि सटीक, रीयल-टाइम उत्तर मिलें — GPT, Gemini, Claude और वेब-स्रोतित तथ्य, भरोसेमंद परिणामों के लिए संयोजित।",
+      quick_links_title: "त्वरित लिंक",
+      quick_links_text: "चैट, सदस्यताएँ और दस्तावेज़ शीर्ष मेनू से उपलब्ध हैं। SlimTech Service द्वारा निर्मित।",
+      hero_title: "सभी AI मॉडल। एक प्लेटफ़ॉर्म।",
+      hero_sub: "GPT, Gemini, Claude और अधिक — एकल सहज चैट में एक साथ। बहु-स्रोत से संचालित सुपर-यथार्थ उत्तर।",
+      start_chat: "चैट शुरू करें",
+      view_plans: "योजनाएँ देखें",
+      features_title: "विशेषताएं",
+      feature_multi: "मल्टी-मॉडल मार्ग (GPT / Gemini / Claude)",
+      feature_sources: "वेब स्रोत और उद्धरण",
+      feature_secure: "सुरक्षित Stripe सदस्यताएँ",
+      feature_sessions: "रीयलटाइम और संदर्भ सत्र",
+      feature_scale: "टीम और एंटरप्राइज़ के लिए स्केल",
+      pricing_title: "योजनाएँ और मूल्य",
+      plan_pro: "Pro",
+      price_pro: "$25",
+      pro_f1: "सभी मुख्य मॉडलों तक पहुंच",
+      pro_f2: "मानक प्रतिक्रिया प्राथमिकता",
+      pro_f3: "ईमेल समर्थन",
+      choose_pro: "Pro चुनें",
+      plan_ultimate: "Ultimate",
+      price_ultimate: "$45",
+      ultimate_f1: "प्राथमिकता मॉडल गणना",
+      ultimate_f2: "उच्च संदर्भ विंडो",
+      ultimate_f3: "प्राथमिकता समर्थन + कोचिंग",
+      choose_ultimate: "Ultimate चुनें",
+      popular: "लोकप्रिय",
+      plan_enterprise: "Enterprise",
+      price_contact: "सेल्स से संपर्क करें",
+      ent_f1: "कस्टम SLA और ऑन-प्रेम विकल्प",
+      ent_f2: "समर्पित मॉडल मार्ग",
+      ent_f3: "प्राथमिकता ऑनबोर्डिंग और समर्थन",
+      contact_sales: "सेल्स से संपर्क",
+      trust_title: "विश्वसनीय & सुरक्षित",
+      trust_text: "भरोसे और गोपनीयता के सर्वोत्तम अभ्यास के साथ निर्मित — शोधकर्ता और टीमों द्वारा विश्वव्यापी रूप से उपयोग किया जाता है।",
+      contact_info: "contact@integen.ai • +27 11 021 0680",
+      per_month: "/महीना",
+      ent_modal_title: "एंटरप्राइज़ सेल्स से संपर्क करें",
+      ent_modal_text: "फॉर्म भरें, हमारी सेल्स टीम एक कार्य दिवस के भीतर आपसे संपर्क करेगी।",
+      ent_label_name: "कंपनी / नाम",
+      ent_ph_name: "आपकी कंपनी या नाम",
+      ent_label_email: "ईमेल",
+      ent_ph_email: "you@company.com",
+      ent_label_notes: "नोट्स",
+      ent_ph_notes: "आप InteGen का कैसे उपयोग करेंगे? (वैकल्पिक)",
+      ent_submit: "अनुरोध भेजें",
+      cancel: "रद्द करें",
+      view_plans_short: "योजनाएँ"
+    },
+
+    ru: {
+      brand_sub: "Единая платформа LLM — SlimTech Service",
+      home: "Главная", about: "О нас", faq: "Вопросы", contact: "Контакты", subscription: "Подписка",
+      open_chat: "Открыть чат",
+      about_intro_title: "О InteGen",
+      about_intro_text: "InteGen объединяет несколько топовых LLM в единый платформенный стек для точных, оперативных ответов — GPT, Gemini, Claude и веб-источники объединены для надежности.",
+      quick_links_title: "Быстрые ссылки",
+      quick_links_text: "Чат, подписки и документация доступны в верхнем меню. Создано SlimTech Service.",
+      hero_title: "Все AI-модели. Одна платформа.",
+      hero_sub: "Испытайте GPT, Gemini, Claude и другие — вместе в одном бесшовном чате. Супер-реалистичные ответы из множества источников.",
+      start_chat: "Начать чат",
+      view_plans: "Посмотреть планы",
+      features_title: "Возможности",
+      feature_multi: "Маршрутизация нескольких моделей (GPT / Gemini / Claude)",
+      feature_sources: "Веб-источники и ссылки",
+      feature_secure: "Безопасные подписки Stripe",
+      feature_sessions: "Реальное время и контекстные сессии",
+      feature_scale: "Масштабирование для команд и корпоративных клиентов",
+      pricing_title: "Планы и цены",
+      plan_pro: "Pro",
+      price_pro: "$25",
+      pro_f1: "Доступ ко всем основным моделям",
+      pro_f2: "Стандартный приоритет ответов",
+      pro_f3: "Поддержка по email",
+      choose_pro: "Выбрать Pro",
+      plan_ultimate: "Ultimate",
+      price_ultimate: "$45",
+      ultimate_f1: "Приоритет вычислений моделей",
+      ultimate_f2: "Более длинный контекст",
+      ultimate_f3: "Приоритетная поддержка + обучение",
+      choose_ultimate: "Выбрать Ultimate",
+      popular: "Популярно",
+      plan_enterprise: "Enterprise",
+      price_contact: "Связаться с продажами",
+      ent_f1: "Кастомные SLA и on-prem опции",
+      ent_f2: "Выделенный роутинг моделей",
+      ent_f3: "Приоритетный онбординг и поддержка",
+      contact_sales: "Связаться с продажами",
+      trust_title: "Надежно и безопасно",
+      trust_text: "Построено с учетом передовых практик надежности и конфиденциальности — используется исследователями и командами по всему миру.",
+      contact_info: "contact@integen.ai • +27 11 021 0680",
+      per_month: "/мес",
+      ent_modal_title: "Связаться с отделом продаж Enterprise",
+      ent_modal_text: "Заполните форму — наши менеджеры свяжутся с вами в рабочий день.",
+      ent_label_name: "Компания / Имя",
+      ent_ph_name: "Ваша компания или имя",
+      ent_label_email: "Email",
+      ent_ph_email: "you@company.com",
+      ent_label_notes: "Примечания",
+      ent_ph_notes: "Как вы планируете использовать InteGen? (необязательно)",
+      ent_submit: "Отправить запрос",
+      cancel: "Отмена",
+      view_plans_short: "Планы"
+    },
+
+    ja: {
+      brand_sub: "統合 LLM Hub — SlimTech Service",
+      home: "ホーム", about: "概要", faq: "よくある質問", contact: "お問い合わせ", subscription: "サブスク",
+      open_chat: "チャットを開く",
+      about_intro_title: "InteGen について",
+      about_intro_text: "InteGen は複数の先進 LLM を統合し、正確でリアルタイムな応答を提供するプラットフォームです — GPT、Gemini、Claude、ウェブソースを融合して信頼性を確保します。",
+      quick_links_title: "クイックリンク",
+      quick_links_text: "チャット、サブスクリプション、ドキュメントは上部メニューから利用可能です。SlimTech Service により構築。",
+      hero_title: "すべての AI モデル。ひとつのプラットフォーム。",
+      hero_sub: "GPT、Gemini、Claude 等を 1 つのシームレスなチャットで体験。複数ソースによる超リアルな応答。",
+      start_chat: "チャットを開始",
+      view_plans: "プランを見る",
+      features_title: "機能",
+      feature_multi: "マルチモデルルーティング（GPT / Gemini / Claude）",
+      feature_sources: "ウェブソースと引用",
+      feature_secure: "安全な Stripe サブスクリプション",
+      feature_sessions: "リアルタイム & コンテクストセッション",
+      feature_scale: "チームおよび企業向けのスケール",
+      pricing_title: "プラン・料金",
+      plan_pro: "Pro",
+      price_pro: "$25",
+      pro_f1: "主要モデルへのアクセス",
+      pro_f2: "標準的な応答優先",
+      pro_f3: "メールサポート",
+      choose_pro: "Pro を選択",
+      plan_ultimate: "Ultimate",
+      price_ultimate: "$45",
+      ultimate_f1: "優先モデル計算",
+      ultimate_f2: "より大きなコンテキストウィンドウ",
+      ultimate_f3: "優先サポート + コーチング",
+      choose_ultimate: "Ultimate を選択",
+      popular: "人気",
+      plan_enterprise: "Enterprise",
+      price_contact: "営業に連絡",
+      ent_f1: "カスタム SLA とオンプレオプション",
+      ent_f2: "専用モデルルーティング",
+      ent_f3: "優先オンボーディングとサポート",
+      contact_sales: "営業に連絡",
+      trust_title: "信頼と安全",
+      trust_text: "信頼性とプライバシーのベストプラクティスに基づいて構築 — 世界中の研究者やチームが使用。",
+      contact_info: "contact@integen.ai • +27 11 021 0680",
+      per_month: "/月",
+      ent_modal_title: "エンタープライズ営業に連絡",
+      ent_modal_text: "フォームにご記入ください。営業チームより1営業日以内にご連絡します。",
+      ent_label_name: "会社 / 名前",
+      ent_ph_name: "会社名またはお名前",
+      ent_label_email: "メール",
+      ent_ph_email: "you@company.com",
+      ent_label_notes: "備考",
+      ent_ph_notes: "InteGen をどのように利用しますか？（任意）",
+      ent_submit: "リクエスト送信",
+      cancel: "キャンセル",
+      view_plans_short: "プラン"
+    },
+
+    de: {
+      brand_sub: "Vereinheitlichter LLM-Hub — SlimTech Service",
+      home: "Start", about: "Über", faq: "FAQ", contact: "Kontakt", subscription: "Abo",
+      open_chat: "Chat öffnen",
+      about_intro_title: "Über InteGen",
+      about_intro_text: "InteGen kombiniert mehrere Top-LLMs in einer Plattform für präzise, Echtzeit-Antworten — GPT, Gemini, Claude und web-basierte Quellen für Zuverlässigkeit.",
+      quick_links_title: "Schnelllinks",
+      quick_links_text: "Chat, Abos und Docs sind über das obere Menü verfügbar. Gebaut von SlimTech Service.",
+      hero_title: "Alle AI-Modelle. Eine Plattform.",
+      hero_sub: "Erlebe GPT, Gemini, Claude & mehr — zusammen in einem nahtlosen Chat. Superrealistische Antworten aus mehreren Quellen.",
+      start_chat: "Chat starten",
+      view_plans: "Pläne ansehen",
+      features_title: "Funktionen",
+      feature_multi: "Multi-Model-Routing (GPT / Gemini / Claude)",
+      feature_sources: "Web-Quellen & Zitate",
+      feature_secure: "Sichere Stripe-Abonnements",
+      feature_sessions: "Echtzeit- und Kontext-Sessions",
+      feature_scale: "Skalierbar für Teams & Enterprise",
+      pricing_title: "Pläne & Preise",
+      plan_pro: "Pro",
+      price_pro: "$25",
+      pro_f1: "Zugang zu allen Kernmodellen",
+      pro_f2: "Standard-Antwortpriorität",
+      pro_f3: "E-Mail-Support",
+      choose_pro: "Pro wählen",
+      plan_ultimate: "Ultimate",
+      price_ultimate: "$45",
+      ultimate_f1: "Priorisierte Modell-Compute",
+      ultimate_f2: "Größere Kontextfenster",
+      ultimate_f3: "Priorisierter Support + Coaching",
+      choose_ultimate: "Ultimate wählen",
+      popular: "Beliebt",
+      plan_enterprise: "Enterprise",
+      price_contact: "Vertrieb kontaktieren",
+      ent_f1: "Angepasste SLAs & On-Prem Optionen",
+      ent_f2: "Dediziertes Modell-Routing",
+      ent_f3: "Priorisiertes Onboarding & Support",
+      contact_sales: "Vertrieb kontaktieren",
+      trust_title: "Vertrauenswürdig & Sicher",
+      trust_text: "Entwickelt mit Best Practices für Zuverlässigkeit und Datenschutz — verwendet von Forschern & Teams weltweit.",
+      contact_info: "contact@integen.ai • +27 11 021 0680",
+      per_month: "/Monat",
+      ent_modal_title: "Enterprise Sales kontaktieren",
+      ent_modal_text: "Füllen Sie das Formular aus, unser Vertriebsteam meldet sich innerhalb eines Arbeitstages.",
+      ent_label_name: "Firma / Name",
+      ent_ph_name: "Ihre Firma oder Ihr Name",
+      ent_label_email: "E-Mail",
+      ent_ph_email: "you@company.com",
+      ent_label_notes: "Notizen",
+      ent_ph_notes: "Wie werden Sie InteGen nutzen? (optional)",
+      ent_submit: "Anfrage senden",
+      cancel: "Abbrechen",
+      view_plans_short: "Pläne"
+    }
+  };
+
+  const LANGS = Object.keys(DICT);
+  function applyLang(lang){
+    const dict = DICT[lang] || DICT.en;
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      if(key && dict[key] !== undefined) el.textContent = dict[key];
     });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+      const key = el.getAttribute('data-i18n-placeholder');
+      if(key && dict[key] !== undefined) el.placeholder = dict[key];
+    });
+    // update selects/options that may need translation (if any)
+    localStorage.setItem('integen_lang', lang);
   }
 
-  // footer
-  const footer = document.querySelector('.footer .left');
-  if(footer) footer.textContent = t.contactEmail + " • " + t.contactPhone1;
-}
+  function initSelector(){
+    const sel = document.getElementById('languageSelector');
+    if(!sel) return;
+    sel.innerHTML = '';
+    const labels = {
+      en:'English', zh:'中文', es:'Español', fr:'Français', hi:'हिन्दी',
+      ru:'Русский', ja:'日本語', de:'Deutsch', pt:'Português'
+    };
+    LANGS.forEach(l=>{
+      const opt = document.createElement('option');
+      opt.value = l;
+      opt.text = labels[l] || l;
+      sel.appendChild(opt);
+    });
+    const saved = localStorage.getItem('integen_lang') || 'en';
+    sel.value = saved;
+    sel.addEventListener('change', ()=> applyLang(sel.value));
+    applyLang(saved);
+  }
 
-// initialize language on load
-document.addEventListener('DOMContentLoaded', ()=>{ 
-  const sel = document.getElementById('language');
-  if(sel){ sel.addEventListener('change', ()=> applyLanguage(sel.value)); }
-  applyLanguage('en');
-});
+  document.addEventListener('DOMContentLoaded', ()=>{
+    initSelector();
+    // ensure dynamic content also updates (modal placeholders)
+    // observe mutations for newly added elements (if any)
+    const observer = new MutationObserver(()=> {
+      const lang = localStorage.getItem('integen_lang') || 'en';
+      applyLang(lang);
+    });
+    observer.observe(document.body, {childList:true, subtree:true});
+  });
+
+  // expose for debugging
+  window.integenSetLang = applyLang;
+})();

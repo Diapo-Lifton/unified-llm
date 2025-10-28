@@ -1,200 +1,220 @@
-// ---------------------------
-// Unified LLM – Full Server (Deployment Ready)
-// ---------------------------
+/**
+ * server.js
+ * Express backend with:
+ * - lowdb for simple storage (ensures default data)
+ * - Stripe Checkout endpoints (create session)
+ * - Webhook endpoint (verify signature)
+ * - Simple chat proxy endpoint (calls OpenAI if OPENAI_API_KEY present)
+ *
+ * NOTE: Do not store secrets in .env committed to Git. Use Render env vars or .env.local locally.
+ */
+
 import express from "express";
-import dotenv from "dotenv";
-import Stripe from "stripe";
 import cors from "cors";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { Low } from "lowdb";
-import { JSONFile } from "lowdb/node";
+import bodyParser from "body-parser";
+import Stripe from "stripe";
+import { Low, JSONFile } from "lowdb";
 import { nanoid } from "nanoid";
 import path from "path";
-import { fileURLToPath } from "url";
 import fs from "fs";
-import bodyParser from "body-parser";
 
-dotenv.config();
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// --- Env / config ---
+const PORT = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV || "development";
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
+const STRIPE_PUBLISHABLE_KEY = process.env.STRIPE_PUBLISHABLE_KEY || "";
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
+const JWT_SECRET = process.env.JWT_SECRET || "change_me";
 
-// ---------------------------
-// ⚙️ Express + Middleware
-// ---------------------------
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+// --- Init Stripe if key present ---
+const stripe = STRIPE_SECRET_KEY ? new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2022-11-15" }) : null;
 
-// ---------------------------
-// 🧠 Database (LowDB)
-// ---------------------------
-
-// Ensure data directory exists
-const dataDir = path.join(__dirname, "data");
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
-
-const dbFile = path.join(dataDir, "users.json");
-const adapter = new JSONFile(dbFile);
-const defaultData = { users: [], logs: [] };
-const db = new Low(adapter, defaultData);
-
-async function initDB() {
-  try {
-    await db.read();
-    if (!db.data || Object.keys(db.data).length === 0) {
-      db.data = defaultData;
-      await db.write();
-    }
-    console.log("✅ LowDB ready");
-  } catch (err) {
-    console.error("❌ Database corrupted or unreadable. Reinitializing...");
-    fs.writeFileSync(dbFile, JSON.stringify(defaultData, null, 2));
-    await db.read();
-    console.log("✅ LowDB reset complete");
-  }
+// --- Setup lowdb with default data so "missing default data" won't happen ---
+const dbFile = path.join(process.cwd(), "db.json");
+if (!fs.existsSync(dbFile)) {
+  fs.writeFileSync(dbFile, JSON.stringify({
+    users: [],
+    subscriptions: [],
+    payments: [],
+    messages: [],
+    settings: { language: "en" }
+  }, null, 2));
 }
-await initDB();
+const adapter = new JSONFile(dbFile);
+const db = new Low(adapter);
 
-// ---------------------------
-// 🔐 JWT Secret
-// ---------------------------
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+// Read DB
+await db.read();
+db.data = db.data || { users: [], subscriptions: [], payments: [], messages: [], settings: { language: "en" } };
+await db.write();
 
-// ---------------------------
-// 💳 Stripe Setup
-// ---------------------------
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const app = express();
 
-// ---------------------------
-// 🧍 USER ROUTES
-// ---------------------------
+// Use JSON parser for non-webhook endpoints
+app.use(cors());
+app.use(express.json({ limit: "1mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Register user
-app.post("/api/register", async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password)
-    return res.status(400).json({ error: "Email and password required" });
+// Serve static files (your public folder)
+app.use(express.static(path.join(process.cwd(), "public")));
 
-  const existing = db.data.users.find((u) => u.email === email);
-  if (existing) return res.status(400).json({ error: "User already exists" });
+// --- Routes ---
 
-  const hashed = await bcrypt.hash(password, 10);
-  const newUser = { id: nanoid(), email, password: hashed, plan: "free" };
-  db.data.users.push(newUser);
+// Health check
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true, env: NODE_ENV });
+});
+
+// Simple settings read/write
+app.get("/api/settings", async (req, res) => {
+  await db.read();
+  res.json(db.data.settings || {});
+});
+app.post("/api/settings", async (req, res) => {
+  db.data.settings = { ...(db.data.settings || {}), ...(req.body || {}) };
   await db.write();
-
-  res.json({ message: "User registered successfully" });
+  res.json({ ok: true, settings: db.data.settings });
 });
 
-// Login
-app.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
-  const user = db.data.users.find((u) => u.email === email);
-  if (!user) return res.status(400).json({ error: "User not found" });
+// Create Stripe checkout session for plan -> returns session URL
+// Expects body: { priceId: "pro" } or { priceId: "ultimate" }
+app.post("/api/checkout", async (req, res) => {
+  if (!stripe) return res.status(500).json({ error: "Stripe not configured on server." });
 
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.status(400).json({ error: "Invalid credentials" });
+  const { priceId } = req.body || {};
+  // We'll map friendly priceId to actual Stripe Price IDs or to inline amounts.
+  // Use your real Stripe Price IDs (recommended) or use amount and currency.
+  // Here we create Checkout session with fixed amounts (in USD cents)
+  const plans = {
+    pro: { price: 2500, name: "Pro", currency: "usd" },       // $25.00
+    ultimate: { price: 4500, name: "Ultimate", currency: "usd" } // $45.00
+  };
+  const plan = plans[priceId];
+  if (!plan) return res.status(400).json({ error: "Unknown plan" });
 
-  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-    expiresIn: "7d",
-  });
-
-  res.json({ message: "Login successful", token, plan: user.plan });
-});
-
-// ---------------------------
-// 💳 STRIPE CHECKOUT
-// ---------------------------
-app.post("/create-checkout-session", async (req, res) => {
   try {
-    const { plan, email } = req.body;
-    const price =
-      plan === "pro"
-        ? process.env.STRIPE_PRICE_PRO
-        : process.env.STRIPE_PRICE_BASIC;
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "subscription",
-      customer_email: email,
-      line_items: [{ price, quantity: 1 }],
-      success_url: `${process.env.BASE_URL}/success.html`,
-      cancel_url: `${process.env.BASE_URL}/cancel.html`,
+      line_items: [
+        {
+          price_data: {
+            currency: plan.currency,
+            product_data: { name: `InteGen — ${plan.name}` },
+            recurring: { interval: "month" },
+            unit_amount: plan.price
+          },
+          quantity: 1
+        }
+      ],
+      // success/cancel URLs should point to your frontend routes
+      success_url: `${req.headers.origin || `http://localhost:${PORT}`}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin || `http://localhost:${PORT}`}/cancel.html`,
+      metadata: { plan: priceId }
     });
 
-    res.json({ url: session.url });
+    return res.json({ url: session.url, id: session.id });
   } catch (err) {
-    console.error("Stripe checkout error:", err);
-    res.status(500).json({ error: err.message });
+    console.error("Stripe create session error:", err);
+    return res.status(500).json({ error: "stripe_error", details: String(err) });
   }
 });
 
-// ---------------------------
-// 🧾 STRIPE WEBHOOK
-// ---------------------------
-app.post(
-  "/webhook",
-  bodyParser.raw({ type: "application/json" }),
-  async (req, res) => {
-    const sig = req.headers["stripe-signature"];
-    let event;
+// Minimal webhook endpoint to capture checkout.session.completed
+// Must use raw body for signature verification
+app.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
+  if (!stripe || !STRIPE_WEBHOOK_SECRET) {
+    console.warn("Webhook received but Stripe or webhook secret not configured.");
+    return res.status(400).send("webhook not configured");
+  }
+  const sig = req.headers["stripe-signature"];
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.error("Webhook signature verification failed:", err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
 
+  // Handle event types
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
+    console.log("Checkout session completed:", session.id, session.metadata);
+
+    // Store payment/subscription record in DB
+    await db.read();
+    db.data.payments = db.data.payments || [];
+    db.data.payments.push({
+      id: nanoid(),
+      stripeSessionId: session.id,
+      customer: session.customer,
+      plan: session.metadata?.plan || null,
+      status: "completed",
+      createdAt: new Date().toISOString()
+    });
+    await db.write();
+  }
+
+  // respond 200
+  res.json({ received: true });
+});
+
+// Simple chat proxy endpoint (demonstration).
+// If OPENAI_API_KEY is set, this can forward to OpenAI (or other adapters).
+app.post("/api/chat", async (req, res) => {
+  const { prompt, model } = req.body || {};
+  if (!prompt) return res.status(400).json({ error: "prompt required" });
+
+  // If OpenAI key present, forward (example with fetch to OpenAI API).
+  if (OPENAI_API_KEY) {
     try {
-      event = stripe.webhooks.constructEvent(
-        req.body,
-        sig,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
+      const fetchRes = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: model || "gpt-4o-mini",
+          messages: [{ role: "user", content: prompt }],
+          max_tokens: 500
+        })
+      });
+      const data = await fetchRes.json();
+      // Save message to DB
+      db.data.messages = db.data.messages || [];
+      db.data.messages.push({ id: nanoid(), prompt, response: data, createdAt: new Date().toISOString() });
+      await db.write();
+      return res.json({ ok: true, ai: data });
     } catch (err) {
-      console.error("Webhook signature error:", err.message);
-      return res.status(400).send(`Webhook Error: ${err.message}`);
+      console.error("OpenAI proxy error:", err);
+      return res.status(500).json({ error: "openai_error", details: String(err) });
     }
-
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
-      const email = session.customer_email;
-      const plan =
-        session.metadata?.plan ||
-        (session.amount_total === 1000 ? "basic" : "pro");
-
-      const user = db.data.users.find((u) => u.email === email);
-      if (user) {
-        user.plan = plan;
-        await db.write();
-        console.log(`✅ Updated ${email} to plan: ${plan}`);
-      }
-    }
-
-    res.json({ received: true });
   }
-);
 
-// ---------------------------
-// 🌍 Routes & Static Pages
-// ---------------------------
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-app.get("/ui", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "ui.html"));
+  // If no OpenAI key present — return a friendly placeholder
+  db.data.messages = db.data.messages || [];
+  const placeholderResponse = `InteGen offline demo answer for: "${prompt}". Set OPENAI_API_KEY to enable real responses.`;
+  db.data.messages.push({ id: nanoid(), prompt, response: placeholderResponse, createdAt: new Date().toISOString() });
+  await db.write();
+  return res.json({ ok: true, ai: { text: placeholderResponse } });
 });
 
-// ---------------------------
-// 🚀 Start Server
-// ---------------------------
-const PORT = process.env.PORT || 3000;
-app
-  .listen(PORT, () => {
-    console.log(`✅ Unified LLM server running at http://localhost:${PORT}`);
-  })
-  .on("error", (err) => {
-    if (err.code === "EADDRINUSE") {
-      console.error(`❌ Port ${PORT} already in use. Try another port.`);
-      process.exit(1);
-    } else {
-      throw err;
-    }
-  });
+// Fallback - serve index.html for SPA-like routes (if you use hash-routing)
+app.get("*", (req, res) => {
+  // Only serve files that exist in public; otherwise serve index.html
+  const possible = path.join(process.cwd(), "public", req.path.replace(/^\//, ""));
+  if (fs.existsSync(possible) && fs.statSync(possible).isFile()) {
+    return res.sendFile(possible);
+  }
+  return res.sendFile(path.join(process.cwd(), "public", "index.html"));
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log("✅ LowDB ready");
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});

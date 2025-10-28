@@ -1,80 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>InteGen — About</title>
-  <link rel="stylesheet" href="styles.css"/>
-  <script src="lang.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — InteGen</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="header">
-    <div class="header-left brand">
-      <img src="assets/Logo.jpg" alt="InteGen logo"/>
+  <!-- Header -->
+  <header class="navbar">
+    <div class="nav-logo">
+      <img src="assets/logo.png" alt="InteGen Logo" class="logo" />
+      <span class="brand-name">InteGen</span>
     </div>
-
-    <nav class="nav">
+    <nav class="nav-links">
       <a href="index.html">Home</a>
-      <a href="about.html" aria-current="page">About</a>
+      <a href="about.html" class="active">About</a>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
       <a href="subscribe.html">Subscription</a>
     </nav>
-
-    <div class="actions">
-      <select id="language" aria-label="Language selector">
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-        <option value="es">Español</option>
+    <div class="nav-right">
+      <select class="lang-select">
+        <option>English</option>
+        <option>French</option>
+        <option>Spanish</option>
       </select>
-      <a class="cta" href="ui.html">Open Chat</a>
+      <button class="chat-btn" onclick="window.location.href='chat.html'">Open Chat</button>
     </div>
   </header>
 
-  <div class="container">
-    <section class="hero">
-      <img class="hero-logo" src="assets/Logo.jpg" alt="InteGen brand"/>
-      <h1 id="title">All AI Models. One Place.</h1>
-      <p id="subtitle" class="subtitle">InteGen AI — combining leading AI models into a single platform that delivers realistic, trusted, combined answers from multiple sources.</p>
+  <section class="hero">
+    <h1>About InteGen</h1>
+    <p>Innovation beyond imagination — where AI models unite to empower the world.</p>
+  </section>
 
-      <div class="actions-row">
-        <a id="start" class="cta" href="register.html">Get Started</a>
-        <a id="plans" class="btn-ghost" href="subscribe.html">View Plans</a>
+  <section class="content-block">
+    <div class="about-grid">
+      <div class="about-card">
+        <i class="fas fa-brain"></i>
+        <h2>Multi-Model Fusion</h2>
+        <p>InteGen unifies leading AI models — GPT, Gemini, Claude, and beyond — to deliver precision, depth, and creativity from every source.</p>
       </div>
-    </section>
 
-    <section style="margin-top:28px;">
-      <h2 id="aboutHeading">About InteGen</h2>
-      <p id="aboutText" style="max-width:900px;margin:14px auto;color:var(--muted);">
-        InteGen AI combines top-performing models (OpenAI GPT, Google Gemini, Anthropic Claude and more) into one platform to give you super-realistic, consolidated responses sourced from trusted global sources. Built by SlimTech Service.
-      </p>
-
-      <div class="features" aria-hidden="false">
-        <div class="card feature-card"><h3>Unified Chat</h3><p>All models routed to return a single best response.</p></div>
-        <div class="card feature-card"><h3>Real-time Sources</h3><p>Trustworthy news and dataset aggregation and summarisation.</p></div>
-        <div class="card feature-card"><h3>Multi-AI Fusion</h3><p>Cross-model ranking and ensemble responses for quality output.</p></div>
-        <div class="card feature-card"><h3>Privacy & Security</h3><p>Encrypted sessions, secure billing, GDPR-aware optional workflows.</p></div>
+      <div class="about-card">
+        <i class="fas fa-server"></i>
+        <h2>Cloud Intelligence</h2>
+        <p>Seamlessly scaling across secure global data centers for maximum uptime, real-time learning, and resilient AI architecture.</p>
       </div>
-    </section>
 
-    <section style="margin-top:36px;">
-      <div class="contact-card">
-        <div>
-          <strong>SlimTech Service — Built InteGen</strong>
-          <div style="margin-top:8px;color:var(--muted)">We combine models, orchestrate sources, and deliver a high-fidelity chat experience.</div>
-        </div>
-        <div class="info" style="margin-left:auto; text-align:right">
-          <div><strong>Phone:</strong> <span class="contact-phone">+27 11 021 0680</span></div>
-          <div><strong>Cell:</strong> <span class="contact-phone">+27 79 066 8838</span></div>
-          <div style="margin-top:6px"><strong>Email:</strong> <span class="contact-email">contact@integen.ai</span></div>
-        </div>
+      <div class="about-card">
+        <i class="fas fa-lock"></i>
+        <h2>Data Security</h2>
+        <p>Zero-trust security, encrypted endpoints, and end-to-end compliance keep user data protected under all global standards.</p>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 
-  <footer class="footer">
-    <div class="left">contact@integen.ai • +27 11 021 0680</div>
-    <div class="right">© 2025 InteGen — SlimTech Service</div>
+  <footer>
+    <p>contact@integen.ai | +27 11 021 0680 | +27 79 066 8838</p>
+    <p>© 2025 InteGen — SlimTech Service. All rights reserved.</p>
   </footer>
 </body>
 </html>

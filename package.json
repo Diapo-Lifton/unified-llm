@@ -1,27 +1,25 @@
 {
   "name": "unified-llm",
   "version": "1.0.0",
+  "description": "InteGen unified LLM hub (server + static site)",
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
-    "axios": "^1.12.2",
-    "bcryptjs": "^3.0.2",
-    "body-parser": "^2.2.0",
+    "body-parser": "^1.20.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
-    "express": "^4.21.2",
-    "express-rate-limit": "^7.5.1",
-    "jsonwebtoken": "^9.0.2",
-    "lowdb": "^7.0.1",
+    "express": "^4.18.2",
+    "lowdb": "^5.0.0",
     "nanoid": "^5.1.6",
-    "node-fetch": "^2.7.0",
-    "stripe": "^13.11.0"
+    "stripe": "^11.0.0"
   },
-  "description": "",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }
